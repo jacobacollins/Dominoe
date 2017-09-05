@@ -40,8 +40,8 @@ public class Board {
         gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
     }
 
-public void DrawBoardDominoe(WritableImage currentDominoe, int i, int j){
-drawRotatedImage(gc,currentDominoe, 270, (board.getWidth()/2 + (26 * i)), 54 + j * 26);
+public void DrawBoardDominoe(WritableImage currentDominoe, int i, int j, int isFlipped){
+drawRotatedImage(gc,currentDominoe, 90 * isFlipped, (board.getWidth()/2 + (26 * i)), 54 + j * 26);
 }
 
 

@@ -17,7 +17,7 @@ public class Dominoe{
     private int leftNumber;
     private int rightNumber;
     private WritableImage dominoPicture;
-    private int isFlipped = -1;
+    private int isFlipped = 0;
 
     public Dominoe(){}
 
