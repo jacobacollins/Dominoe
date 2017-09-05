@@ -17,6 +17,7 @@ public class Dominoe{
     private int leftNumber;
     private int rightNumber;
     private WritableImage dominoPicture;
+    private int isFlipped = -1;
 
     public Dominoe(){}
 
@@ -45,6 +46,14 @@ public class Dominoe{
 
     public WritableImage getDominoPicture() {
         return dominoPicture;
+    }
+
+    public int getIsFlipped() {
+        return isFlipped;
+    }
+
+    public void setIsFlipped(int isFlipped) {
+        this.isFlipped = isFlipped;
     }
 
     public void setDominoPicture(WritableImage dominoPicture) {

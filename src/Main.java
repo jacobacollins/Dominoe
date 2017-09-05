@@ -79,10 +79,18 @@ public class Main extends Application  {
         turn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                board.flipDominoe(person.getH().dom[dominoePostion].getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber());
-              //  person.getH().dom[dominoePostion] = currentDominoe;
-                System.out.println(currentDominoe.toString());
+                if(currentDominoe.getIsFlipped() == 1){
+                    board.flipDominoe(person.getH().dom[dominoePostion].getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped());
+                    //  person.getH().dom[dominoePostion] = currentDominoe;
+                    System.out.println(person.getH().dom[dominoePostion]);
+                    person.getH().dom[dominoePostion].setIsFlipped(-1);
+                }
+                else if(currentDominoe.getIsFlipped() == -1){
+                    board.flipDominoe(person.getH().dom[dominoePostion].getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped());
+                    //  person.getH().dom[dominoePostion] = currentDominoe;
+                    System.out.println(currentDominoe.toString());
+                    person.getH().dom[dominoePostion].setIsFlipped(1);
+                }
 
             }
         });
@@ -143,7 +151,7 @@ public class Main extends Application  {
                                 ){
                             currentDominoe = person.getH().dom[1];
                             dominoePostion = 1;
-
+                            System.out.println(currentDominoe.toString());
                         } else if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 2 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (2 * 60) + 54
                                 ) {
@@ -151,30 +159,34 @@ public class Main extends Application  {
 
                             currentDominoe = person.getH().dom[2];
                             dominoePostion = 2;
-
+                            System.out.println(currentDominoe.toString());
                         } else if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 3 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (3 * 60) + 54
                                 ) {
                             currentDominoe = person.getH().dom[3];
                             dominoePostion = 3;
+                            System.out.println(currentDominoe.toString());
                         } else if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 4 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (4 * 60) + 54
                                 ) {
 
                             currentDominoe = person.getH().dom[4];
                             dominoePostion = 4;
+                            System.out.println(currentDominoe.toString());
                         } else if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 5 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (5 * 60) + 54
                                 ) {
 
                             currentDominoe = person.getH().dom[5];
                             dominoePostion = 5;
+                            System.out.println(currentDominoe.toString());
                         } else if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 6 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (6 * 60) + 54
                                 ) {
 
                             currentDominoe = person.getH().dom[6];
                             dominoePostion = 6;
+                            System.out.println(currentDominoe.toString());
                         }
                     }
 

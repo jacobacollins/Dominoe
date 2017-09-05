@@ -45,8 +45,8 @@ drawRotatedImage(gc,currentDominoe, 270, (board.getWidth()/2 + (26 * i)), 54 + j
 }
 
 
-public void flipDominoe(WritableImage flip, int currentDom, Dominoe flipped, int right, int left){
-    drawRotatedImage(gc, flip, -90, ((board.getWidth() /2)-182) + currentDom * 60, board.getHeight() - 54);
+public void flipDominoe(WritableImage flip, int currentDom, Dominoe flipped, int right, int left, int isFlipped){
+    drawRotatedImage(gc, flip, 90 * isFlipped, ((board.getWidth() /2)-178) + currentDom * 60, board.getHeight() - 54);
     flipped.setLeftNumber(right);
     flipped.setRightNumber(left);
 }
