@@ -61,6 +61,14 @@ public class Board {
         return centerDominoe;
     }
 
+    public Dominoe getLeftDominoe() {
+        return leftDominoe;
+    }
+
+    public void setLeftDominoe(Dominoe leftDominoe) {
+        this.leftDominoe = leftDominoe;
+    }
+
     public void DrawHand(Dominoe[] startingHand){
         for(int i = 0; i < startingHand.length; i++) {
 
