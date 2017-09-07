@@ -9,12 +9,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class Main extends Application  {
@@ -63,14 +62,18 @@ public class Main extends Application  {
 
         root.setTop(boneyard);
         root.setCenter(canvas);
-        //bottom.setStyle("-fx-border-color: red;");
+
 
         root.setRight(top);
 
         Board board = new Board(canvas, person.getH().dom, gc);
         board.DrawHand(person.getH().dom);
 
-        board.DrawBoardDominoe(lib.draw().getDominoPicture(), 0,0, 1);
+
+
+        board.setCenterDominoe(lib.draw());
+        board.setRightDominoe(board.getCenterDominoe());
+        board.DrawBoardDominoe(board.getCenterDominoe().getDominoPicture(), 0,0, 1);
         board.DrawHand(person.getH().dom);
         boardCount--;
         boneyard.setText("Boneyard: " + boardCount);
@@ -79,74 +82,137 @@ public class Main extends Application  {
             @Override
             public void handle(ActionEvent event) {
 
-                if(currentDominoe.getIsFlipped() == -1){
-                    board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped() * -1);
+                if (currentDominoe != null) {
+                    if (currentDominoe.getIsFlipped() == -1) {
+                        board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion, currentDominoe, currentDominoe.getRightNumber(), currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped() * -1);
 
-                    System.out.println(currentDominoe.toString());
-                    currentDominoe.setIsFlipped(1);}
-                else if(currentDominoe.getIsFlipped() == 0){
-                    currentDominoe.setIsFlipped(-1);
-                    board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped());
+                        System.out.println(currentDominoe.toString());
+                        currentDominoe.setIsFlipped(1);
+                    } else if (currentDominoe.getIsFlipped() == 0) {
+                        currentDominoe.setIsFlipped(-1);
+                        board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion,currentDominoe, currentDominoe.getRightNumber(), currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped());
 
-                    System.out.println(currentDominoe.toString());
+                        System.out.println(currentDominoe.toString());
+
+                    } else if (currentDominoe.getIsFlipped() == 1) {
+                        board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion, currentDominoe, currentDominoe.getRightNumber(), currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped() * -1);
+
+                        System.out.println(currentDominoe.toString());
+                        currentDominoe.setIsFlipped(-1);
+                    }
+
 
                 }
-                else if(currentDominoe.getIsFlipped() == 1 ){
-                    board.flipDominoe(currentDominoe.getDominoPicture(), dominoePostion,person.getH().dom[dominoePostion],currentDominoe.getRightNumber(),currentDominoe.getLeftNumber(), currentDominoe.getIsFlipped() * -1);
-
-                    System.out.println(currentDominoe.toString());
-                    currentDominoe.setIsFlipped(-1);
-                }
-
-
             }
-        });
+            });
+
 
         right.setOnAction(new EventHandler<ActionEvent>() {
                               @Override
                               public void handle(ActionEvent event) {
-                                  if(boardCount > 0 && currentDominoe != null && currentDominoe.getIsFlipped() == 0) {
-                                      currentDominoe.setIsFlipped(1);
-                                      board.DrawBoardDominoe(currentDominoe.getDominoPicture(), rightX, rightY %2, 1);
-                                      person.getH().dom[dominoePostion] = lib.draw();
-                                      board.DrawHand(person.getH().dom);
-                                      boardCount--;
-                                      rightX++;
-                                      rightY++;
+                                  if (currentDominoe != null && board.isLegal(board.getRightDominoe().getRightNumber(), currentDominoe.getLeftNumber())) {
+                                      if (currentDominoe != null && currentDominoe.getIsFlipped() != -1 && currentDominoe.getLeftNumber() != -2) {
+
+
+
+                                         if(boardCount > 0 ) {
+                                             board.DrawBoardDominoe(currentDominoe.getDominoPicture(), rightX, rightY % 2, 1);
+                                             //new dominoe in the hand
+                                             person.getH().dom[dominoePostion] = lib.draw();
+                                             rightX++;
+                                             rightY++;
+                                             boardCount--;
+                                             board.setRightDominoe(currentDominoe);
+                                         } else if(boardCount <= 0 && currentDominoe != board.getRightDominoe()){
+                                             board.DrawBoardDominoe(currentDominoe.getDominoPicture(), rightX, rightY % 2, 1);
+                                             System.out.println("currnet dominoe is " +currentDominoe.toString() + "\n boneyard = " + boardCount);
+                                             board.setRightDominoe(currentDominoe);
+                                             System.out.println("right dominoe is " + board.getRightDominoe());
+                                             person.getH().dom[dominoePostion] = lib.getBlankDominoe();
+                                             board.flipDominoe(lib.getBlankDominoePic(),dominoePostion,lib.getBlankDominoe() , -2, -2, 1);
+                                             System.out.println("after flip current dominoe is " +  currentDominoe);
+                                             rightX++;
+                                             rightY++;
+
+                                             System.out.println("current dominoe now is " + currentDominoe.toString());
+                                         }
+
+
+
+
+
+                                         //sets current dominoe
+                                        //currentDominoe = person.getH().dom[dominoePostion];
+                                        //draw hand
+                                       board.DrawHand(person.getH().dom);
+
+
+
+
+                                      } else if (currentDominoe != null && currentDominoe.getIsFlipped() == -1 && currentDominoe.getLeftNumber() != -2) {
+
+
+
+                                          if(boardCount > 0 ) {
+                                              board.DrawBoardDominoe(currentDominoe.getDominoPicture(), rightX, rightY % 2, -1);
+                                              //new dominoe in the hand
+                                              person.getH().dom[dominoePostion] = lib.draw();
+                                              rightX++;
+                                              rightY++;
+                                              boardCount--;
+                                              board.setRightDominoe(currentDominoe);
+                                          } else if(boardCount <= 0 && currentDominoe != board.getRightDominoe()){
+                                              board.DrawBoardDominoe(currentDominoe.getDominoPicture(), rightX, rightY % 2, -1);
+                                              System.out.println("currnet dominoe is " +currentDominoe.toString() + "\n boneyard = " + boardCount);
+                                              board.setRightDominoe(currentDominoe);
+                                              System.out.println("right dominoe is " + board.getRightDominoe());
+                                              person.getH().dom[dominoePostion] = lib.getBlankDominoe();
+                                              board.flipDominoe(lib.getBlankDominoePic(),dominoePostion,lib.getBlankDominoe() , -2, -2, 1);
+                                              System.out.println("after flip current dominoe is " +  currentDominoe);
+                                              rightX++;
+                                              rightY++;
+
+                                              System.out.println("current dominoe now is " + currentDominoe.toString());
+                                          }
+
+
+
+
+
+                                          //sets current dominoe
+                                          //currentDominoe = person.getH().dom[dominoePostion];
+                                          //draw hand
+                                          board.DrawHand(person.getH().dom);
+                                      }
+                                      boneyard.setText("Boneyard: " + boardCount);
                                   }
-                                  boneyard.setText("Boneyard: " + boardCount);
                               }
                           }
-
         );
 
         left.setOnAction(new EventHandler<ActionEvent>() {
                               @Override
                               public void handle(ActionEvent event) {
-                                  if(boardCount > 0 && currentDominoe != null && currentDominoe.getIsFlipped() == 0) {
-                                      currentDominoe.setIsFlipped(1);
-                                      board.DrawBoardDominoe(currentDominoe.getDominoPicture(), leftY, leftX %2, 1);
-                                      person.getH().dom[dominoePostion] = lib.draw();
-                                      board.DrawHand(person.getH().dom);
-                                      boardCount--;
-                                      leftY--;
-                                      leftX++;
-                                  } else  if(boardCount > 0 && currentDominoe != null && currentDominoe.getIsFlipped() == 1) {
+                                  if(currentDominoe != null && currentDominoe.getIsFlipped() != -1) {
 
                                       board.DrawBoardDominoe(currentDominoe.getDominoPicture(), leftY, leftX %2, 1);
                                       person.getH().dom[dominoePostion] = lib.draw();
+
                                       board.DrawHand(person.getH().dom);
                                       boardCount--;
                                       leftY--;
                                       leftX++;
-                                  }else  if(boardCount > 0 && currentDominoe != null && currentDominoe.getIsFlipped() == -1) {
+                                      currentDominoe = null;
+                                  }else  if(currentDominoe != null && currentDominoe.getIsFlipped() == -1) {
 
                                       board.DrawBoardDominoe(currentDominoe.getDominoPicture(), leftY, leftX %2, -1);
                                       person.getH().dom[dominoePostion] = lib.draw();
+
                                       board.DrawHand(person.getH().dom);
                                       boardCount--;
                                       leftY--;
                                       leftX++;
+                                      currentDominoe = null;
                                   }
 
                                   boneyard.setText("Boneyard: " + boardCount);
@@ -163,11 +229,11 @@ public class Main extends Application  {
 
 
                 if (mouseEvent.getY() > canvas.getHeight() - 54) {
-                    for (int i = 0; i < 7; i++) {
 
-                        if (mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 0 * 60) &&
+
+                        if ((mouseEvent.getX() > (((canvas.getWidth() / 2) -180) + 0 * 60) &&
                                 mouseEvent.getX() < ((canvas.getWidth() / 2)-180) + (0 * 40) + 54
-                                ) {
+                                ) && person.getH().dom[0] !=lib.getBlankDominoe()) {
                             currentDominoe = person.getH().dom[0];
                             dominoePostion = 0;
                             System.out.println(currentDominoe.toString());
@@ -215,7 +281,7 @@ public class Main extends Application  {
                             dominoePostion = 6;
                             System.out.println(currentDominoe.toString());
                         }
-                    }
+
 
 
                 }
@@ -232,17 +298,7 @@ public class Main extends Application  {
         primaryStage.show();
     }
 
-    private void drawRotatedImage(GraphicsContext gc, Image image, double angle, double tlpx, double tlpy) {
-        gc.save(); // saves the current state on stack, including the current transform
-        rotate(gc, angle, tlpx + image.getWidth() / 2, tlpy + image.getHeight() / 2);
-        gc.drawImage(image, tlpx, tlpy);
-        gc.restore(); // back to original state (before rotation)
-    }
 
-    private void rotate(GraphicsContext gc, double angle, double px, double py) {
-        Rotate r = new Rotate(angle, px, py);
-        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
-    }
     public static void main(String[] args)  {
 
 

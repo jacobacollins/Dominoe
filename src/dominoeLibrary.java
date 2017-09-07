@@ -12,11 +12,18 @@ public class dominoeLibrary{
 
     public Dominoe[] dominoes;
     private int currentDominoe;
+    private Image blank;
+    private WritableImage blankDominoePic;
+    private Dominoe blankDominoe;
       int count = 0;
     public dominoeLibrary(){
 
         dominoes = new Dominoe[28];
         Image dominoeLib = new Image(getClass().getResourceAsStream("Dominoes.png"));
+        blank = new Image(getClass().getResourceAsStream("blank.png"));
+
+        PixelReader read = blank.getPixelReader();
+
         PixelReader reader = dominoeLib.getPixelReader();
         WritableImage temp;
 
@@ -28,7 +35,11 @@ public class dominoeLibrary{
         int top = 0;
         int bottom = 0;
 
+        blankDominoePic = new WritableImage(read,0, 0,28 ,54);
 
+
+        blankDominoe = new Dominoe(-2,-2, getBlankDominoePic());
+        blankDominoe.setIsFlipped(1);
 
         for (int counter = 0; counter < 7; counter++) {
             while (top < bottom) {
@@ -54,7 +65,15 @@ public class dominoeLibrary{
     }
 
 
-public void shuffle(){
+    public WritableImage getBlankDominoePic() {
+        return blankDominoePic;
+    }
+
+    public Dominoe getBlankDominoe() {
+        return blankDominoe;
+    }
+
+    public void shuffle(){
         currentDominoe = 0;
 
         Random rand = new Random();

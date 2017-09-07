@@ -11,6 +11,12 @@ public class Board {
     private Dominoe[] startingHand;
     private WritableImage currentDominoe;
     private GraphicsContext gc;
+    private Dominoe centerDominoe;
+    private Dominoe rightDominoe;
+    private Dominoe rightTemp = new Dominoe(0,0,null);
+    private Dominoe leftDominoe;
+
+
 
     public Board(Canvas board, Dominoe[] startingHand, GraphicsContext gc) {
         this.board = board;
@@ -20,10 +26,45 @@ public class Board {
     }
 
 
+    public void setRightDominoe(Dominoe rightDominoe) {
+        this.rightDominoe = rightDominoe;
+    }
+
+
+    public Dominoe getRightDominoe() {
+        return rightDominoe;
+    }
+
+    public Dominoe getRightTemp() {
+        return rightTemp;
+    }
+
+    public void setRightTemp(Dominoe rightTemp) {
+        this.rightTemp = rightTemp;
+    }
+
+    public boolean isLegal(int firstNumber, int secondNumber){
+        if(firstNumber == secondNumber){
+            return true;
+        }
+        else if(firstNumber == 0 || secondNumber == 0){
+            return  true;
+        }
+        else{return false;}
+    }
+
+    public void setCenterDominoe(Dominoe centerDominoe) {
+        this.centerDominoe = centerDominoe;
+    }
+
+    public Dominoe getCenterDominoe() {
+        return centerDominoe;
+    }
+
     public void DrawHand(Dominoe[] startingHand){
         for(int i = 0; i < startingHand.length; i++) {
 
-            drawRotatedImage(gc, startingHand[i].getDominoPicture(),90, ((board.getWidth() /2)-180) + i * 60, board.getHeight() - 54);
+            drawRotatedImage(gc, startingHand[i].getDominoPicture(),90, ((board.getWidth() /2)-178) + i * 60, board.getHeight() - 54);
            // gc.drawImage(startingHand[i].getDominoPicture(), ((board.getWidth() /2)-140) + i * 40, board.getHeight() - 54);
 
         }
@@ -41,7 +82,7 @@ public class Board {
     }
 
 public void DrawBoardDominoe(WritableImage currentDominoe, int i, int j, int isFlipped){
-drawRotatedImage(gc,currentDominoe, 90 * isFlipped, (board.getWidth()/2 + (26 * i)), 54 + j * 26);
+drawRotatedImage(gc,currentDominoe, 90 * isFlipped, (board.getWidth()/2 + (28 * i) ), 54 + j * 26);
 }
 
 
@@ -50,5 +91,7 @@ public void flipDominoe(WritableImage flip, int currentDom, Dominoe flipped, int
     flipped.setLeftNumber(right);
     flipped.setRightNumber(left);
 }
+
+
 
 }
