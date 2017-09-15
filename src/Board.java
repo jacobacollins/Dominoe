@@ -126,15 +126,14 @@ public class Board {
     public void DrawHand(ArrayList<Dominoe> startingHand){
         for(int i = 0; i < startingHand.size(); i++) {
 
-            drawRotatedImage(gc, startingHand.get(i).getDominoPicture(),90, ((board.getWidth() /2)-178) + i * 60, board.getHeight() - 54);
-           // gc.drawImage(startingHand[i].getDominoPicture(), ((board.getWidth() /2)-140) + i * 40, board.getHeight() - 54);
+            drawImage(gc, startingHand.get(i).getDominoPicture(),90, ((board.getWidth() /2)-178) + i * 60, board.getHeight() - 54);
 
         }
 }
-    private void drawRotatedImage(GraphicsContext gc, WritableImage image, double angle, double tlpx, double tlpy) {
+    private void drawImage(GraphicsContext gc, WritableImage image, double rotation, double x, double y) {
         gc.save(); // saves the current state on stack, including the current transform
-        rotate(gc, angle, tlpx + image.getWidth() / 2, tlpy + image.getHeight() / 2);
-        gc.drawImage(image, tlpx, tlpy);
+        rotate(gc, rotation, x + image.getWidth() / 2, y + image.getHeight() / 2);
+        gc.drawImage(image, x, y);
         gc.restore(); // back to original state (before rotation)
     }
 
@@ -144,12 +143,12 @@ public class Board {
     }
 
 public void DrawBoardDominoe(WritableImage currentDominoe, int i, int j, int isFlipped){
-drawRotatedImage(gc,currentDominoe, 90 * isFlipped, (board.getWidth()/2 + (28 * i) ), 54 + j * 26);
+drawImage(gc,currentDominoe, 90 * isFlipped, (board.getWidth()/2 + (28 * i) ), 54 + j * 26);
 }
 
 
 public void flipDominoe(WritableImage flip, int currentDom, int isFlipped){
-    drawRotatedImage(gc, flip, 90 * isFlipped, ((board.getWidth() /2)-178) + currentDom * 60, board.getHeight() - 54);
+    drawImage(gc, flip, 90 * isFlipped, ((board.getWidth() /2)-178) + currentDom * 60, board.getHeight() - 54);
 
 }
 
