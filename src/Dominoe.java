@@ -17,11 +17,10 @@ public class Dominoe{
     private int leftNumber;
     private int rightNumber;
     private WritableImage dominoPicture;
-    private int isFlipped = 0;
 
     public Dominoe(){}
 
-    public Dominoe(int leftNumber, int rightNumber, WritableImage dominoPicture){
+    public Dominoe(int leftNumber, int rightNumber, WritableImage dominoPicture) {
         this.leftNumber = leftNumber;
         this.rightNumber = rightNumber;
         this.dominoPicture = dominoPicture;
@@ -48,22 +47,14 @@ public class Dominoe{
         return dominoPicture;
     }
 
-    public int getIsFlipped() {
-        return isFlipped;
-    }
 
-    public void setIsFlipped(int isFlipped) {
-        this.isFlipped = isFlipped;
-    }
 
-    public void setDominoPicture(WritableImage dominoPicture) {
-        this.dominoPicture = dominoPicture;
-    }
 
     public String toString(){
 
         return "[" + leftNumber + "]|[" + rightNumber + "]"  ;
     }
+
 
 
 

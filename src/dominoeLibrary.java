@@ -5,20 +5,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
 public class dominoeLibrary{
 
-    public Dominoe[] dominoes;
+    public ArrayList<Dominoe> dominoes;
     private int currentDominoe;
     private Image blank;
     private WritableImage blankDominoePic;
     private Dominoe blankDominoe;
-      int count = 0;
+    private  int count = 0;
     public dominoeLibrary(){
 
-        dominoes = new Dominoe[28];
+        dominoes = new ArrayList<Dominoe>(28);
         Image dominoeLib = new Image(getClass().getResourceAsStream("Dominoes.png"));
         blank = new Image(getClass().getResourceAsStream("blank.png"));
 
@@ -39,19 +40,19 @@ public class dominoeLibrary{
 
 
         blankDominoe = new Dominoe(-2,-2, getBlankDominoePic());
-        blankDominoe.setIsFlipped(1);
+
 
         for (int counter = 0; counter < 7; counter++) {
             while (top < bottom) {
                 temp = new WritableImage(reader, top* (width + 4), bottom * (54 + 10), width, height);
-                dominoes[count] = new Dominoe(bottom, top,temp);
+                dominoes.add(count, new Dominoe(bottom, top,temp));
 
                 count++;
-                ++top;
+                top++;
             }
-            while (bottom == top) {
+            while (top == bottom) {
                 temp = new WritableImage(reader, top * (width + 4), bottom * (54 + 10), width, height);
-                dominoes[count] = new Dominoe(bottom, top,temp);
+                dominoes.add(count,new Dominoe(bottom, top,temp));
                 count++;
 
                 top = 0;
@@ -60,7 +61,7 @@ public class dominoeLibrary{
 
 
         }
-        //System.out.println(count);
+      //  System.out.println(count);
 
     }
 
@@ -77,12 +78,13 @@ public class dominoeLibrary{
         currentDominoe = 0;
 
         Random rand = new Random();
-        for(int i = 0; i < dominoes.length; i++){
+        for(int i = 0; i < dominoes.size(); i++){
             int j = rand.nextInt(28);
 
-            Dominoe temp = dominoes[i];
-            dominoes[i] = dominoes[j];
-            dominoes[j] = temp;
+            Dominoe temp = dominoes.get(i);
+            dominoes.set(i, dominoes.get(j));
+            dominoes.set(j, temp);
+
         }
 }
 
@@ -90,11 +92,11 @@ public Dominoe draw(){
     Dominoe dominoe = null;
 if(dominoes != null ){
     while(dominoe == null){
-        int next = (int)(Math.random()*dominoes.length);
-        dominoe = dominoes[next];
-        dominoes[next] = null;
+        int next = (int)(Math.random()*dominoes.size());
+        dominoe = dominoes.get(next);
+        dominoes.set(next, null);
     }
-   // System.out.print(dominoe.toString() + " ");
+    //System.out.print(dominoe.toString() + " ");
    return dominoe;
 }
     return null;
